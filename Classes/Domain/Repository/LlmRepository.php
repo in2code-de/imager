@@ -20,7 +20,11 @@ class LlmRepository
 {
     private string $apiKey = '';
     private string $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
-    private string $model = 'gemini-2.5-flash-image:generateContent';
+    private array $models = [
+        '2_5_flash_image' => 'gemini-2.5-flash-image:generateContent',
+        '3_pro_image_preview' => 'gemini-3-pro-image-preview:generateContent',
+    ];
+    private string $mimeType = 'image/jpeg'; // or image/png
 
     public function __construct(
         private readonly StorageRepository $storageRepository,
@@ -51,6 +55,7 @@ class LlmRepository
                 ],
             ],
             'generationConfig' => [
+                'responseModalities' => ['image'],
                 'imageConfig' => [
                     'aspectRatio' => ConfigurationUtility::getConfigurationByKey('aspectRatio') ?: '16:9',
                 ],
@@ -64,7 +69,7 @@ class LlmRepository
             'body' => json_encode($payload),
         ];
         $event = $this->eventDispatcher->dispatch(
-            new BeforeRequestEvent($this->apiUrl  . $this->model, $additionalOptions)
+            new BeforeRequestEvent($this->getApiUrl(), $additionalOptions)
         );
         $response = $this->requestFactory->request($event->getApiUrl(), 'POST', $event->getAdditionalOptions());
         if ($response->getStatusCode() !== 200) {
@@ -76,6 +81,7 @@ class LlmRepository
         }
         foreach ($responseData['candidates'][0]['content']['parts'] as $part) {
             if (isset($part['inlineData']['data'])) {
+                $this->mimeType = $part['inlineData']['mimeType'] ?? 'image/png';
                 return base64_decode($part['inlineData']['data']);
             }
         }
@@ -97,9 +103,23 @@ class LlmRepository
         return $file;
     }
 
+    protected function getApiUrl(): string
+    {
+        $model = $this->models[ConfigurationUtility::getConfigurationByKey('model')] ?? $this->models['3_pro_image_preview'];
+        return $this->apiUrl . $model;
+    }
+
     protected function generateFileName(string $prompt): string
     {
-        return sprintf('ai_generated_%d_%s.png', time(), md5($prompt));
+        return sprintf('ai_generated_%d_%s.' . $this->getExtension(), time(), md5($prompt));
+    }
+
+    protected function getExtension(): string
+    {
+        if (stristr($this->mimeType, 'png') !== false) {
+            return 'png';
+        }
+        return 'jpg';
     }
 
     protected function createTempFile(string $imageData): string

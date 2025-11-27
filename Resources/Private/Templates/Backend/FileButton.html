@@ -1,32 +1,32 @@
 <div>
 	<button
-		type="button"
-		class="btn btn-default"
-		data-imager-action="showPrompt"
-		title="{f:translate(key:'LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:button.aiImage')}">
+			type="button"
+			class="btn btn-default"
+			data-imager-action="showPrompt"
+			title="{f:translate(key:'LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:button.aiImage')}">
 		<core:icon identifier="actions-image" size="small" />
 		{f:translate(key:'LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:button.aiImage')}
 	</button>
 	<div
-		class="form-group mt-3"
-		data-imager-textarea-container
-		style="display: none;">
+			class="form-group mt-3"
+			data-imager-textarea-container
+			style="display: none;">
 
 		<textarea
-			class="form-control"
-			data-imager-prompt
-			rows="3"
-			placeholder="{f:translate(key:promptPlaceholder)}">{f:translate(key:promptValue)}</textarea>
+				class="form-control"
+				data-imager-prompt
+				rows="3"
+				placeholder="{f:if(condition:'{translate(key:promptPlaceholder)}',then:'{translate(key:promptPlaceholder)}')}"><f:if condition="{f:translate(key:promptValue)}">{f:translate(key:promptValue)}</f:if></textarea>
 
 		<button
-			type="button"
-			title="{f:translate(key:'LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:button.aiImageCreate')}"
-			class="btn btn-primary mt-2"
-			data-imager-action="addImage"
-			data-imager-fieldname="{event.fieldName}"
-			data-imager-tablename="{event.tableName}"
-			data-imager-uid="{event.databaseRow.uid}"
-			data-imager-pid="{event.databaseRow.pid}">
+				type="button"
+				title="{f:translate(key:'LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:button.aiImageCreate')}"
+				class="btn btn-primary mt-2"
+				data-imager-action="addImage"
+				data-imager-fieldname="{event.fieldName}"
+				data-imager-tablename="{event.tableName}"
+				data-imager-uid="{event.databaseRow.uid}"
+				data-imager-pid="{event.databaseRow.pid}">
 			<core:icon identifier="actions-cloud-download" size="small" />
 			{f:translate(key:'LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:button.aiImageCreate')}
 		</button>

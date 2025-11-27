@@ -1,6 +1,3 @@
-# cat=basic//010; type=text; label= Gemini API key: Better use env GOOGLE_API_KEY instead
-apiKey =
-
 # cat=basic//020; type=text; label= Placeholder text: Placeholder text for prompt field in backend
 promptPlaceholder = LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:prompt.placeholder
 
@@ -13,5 +10,11 @@ promptPrefix =
 # cat=basic//050; type=number; label= Image storage: Define where to store new images
 combinedIdentifier = 1:/_imager/
 
-# cat=basic//060; type=options[1:1,2:3,3:2,3:4,4:3,4:5,5:4,9:16,16:9,21:9]; label= Aspect ratio: Define the default ratio of the generated image
+# cat=advanced//100; type=options[1:1,2:3,3:2,3:4,4:3,4:5,5:4,9:16,16:9,21:9]; label= Aspect ratio: Define the default ratio of the generated image
 aspectRatio = 16:9
+
+# cat=advanced//110; type=options[3_pro_image_preview,2_5_flash_image]; label= Gemini model: Switch between different Gemini models (price per image can differ)
+model = 3_pro_image_preview
+
+# cat=advanced//120; type=text; label= Gemini API key: Better use env GOOGLE_API_KEY instead
+apiKey =
