@@ -54,6 +54,7 @@ There are two events in EXT:imager that can be used to
 
 ## Changelog and breaking changes
 
-| Version | Date       | State   | Description                        |
-|---------|------------|---------|------------------------------------|
-| 1.0.0   | 2025-11-27 | Task    | Initial release of in2code/imager  |
+| Version | Date       | State   | Description                       |
+|---------|------------|---------|-----------------------------------|
+| 1.1.0   | 2025-11-27 | Task    | Add extension icon                |
+| 1.0.0   | 2025-11-27 | Task    | Initial release of in2code/imager |
