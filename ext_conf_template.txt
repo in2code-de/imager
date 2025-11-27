@@ -1,0 +1,17 @@
+# cat=basic//010; type=text; label= Gemini API key: Better use env GOOGLE_API_KEY instead
+apiKey =
+
+# cat=basic//020; type=text; label= Placeholder text: Placeholder text for prompt field in backend
+promptPlaceholder = LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:prompt.placeholder
+
+# cat=basic//030; type=text; label= Default text: Default text for prompt field in backend
+promptValue = LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:prompt.value
+
+# cat=basic//040; type=text; label= Prompt prefix: Prefix text that should be always added to the prompt at the beginning
+promptPrefix =
+
+# cat=basic//050; type=number; label= Image storage: Define where to store new images
+combinedIdentifier = 1:/_imager/
+
+# cat=basic//060; type=options[1:1,2:3,3:2,3:4,4:3,4:5,5:4,9:16,16:9,21:9]; label= Aspect ratio: Define the default ratio of the generated image
+aspectRatio = 16:9

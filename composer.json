@@ -1,0 +1,45 @@
+{
+	"name": "in2code/imager",
+	"description": "Adding images from Gemini with Nano Banana",
+	"keywords": [
+		"typo3",
+		"images",
+		"ai",
+		"gemini",
+		"nano banana"
+	],
+	"homepage": "https://github.com/in2code-de/imager",
+	"authors": [
+		{
+			"name": "Sandra Pohl",
+			"email": "sandra.pohl@in2code.de",
+			"role": "Product owner",
+			"homepage": "https://www.in2code.de"
+		},
+		{
+			"name": "Alex Kellner",
+			"email": "alexander.kellner@in2code.de",
+			"role": "Technical owner",
+			"homepage": "https://www.in2code.de"
+		}
+	],
+	"type": "typo3-cms-extension",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": ">=8.2.0",
+		"typo3/cms-core": "^13.4"
+	},
+	"replace": {
+		"typo3-ter/imager": "self.version"
+	},
+	"autoload": {
+		"psr-4": {
+			"In2code\\Imager\\": "Classes/"
+		}
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "imager"
+		}
+	}
+}

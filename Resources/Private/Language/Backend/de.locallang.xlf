@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-01-01T12:00:00Z" product-name="imager">
+		<header/>
+		<body>
+			<trans-unit id="button.aiImage">
+				<source>Create AI image</source>
+				<target state="translated">KI Bild</target>
+			</trans-unit>
+			<trans-unit id="button.aiImageCreate">
+				<source>Add image</source>
+				<target state="translated">Bild hinzufügen</target>
+			</trans-unit>
+			<trans-unit id="prompt.placeholder">
+				<source>Generate a photorealistic image of...</source>
+				<target state="translated">Erstelle ein fotorealistisches Bild von...</target>
+			</trans-unit>
+			<trans-unit id="prompt.value">
+				<source>Create a photorealistic image of a Dalmatian swimming in the sea with a flag in its mouth bearing the inscription "in2code".</source>
+				<target state="translated">Erstelle ein fotorealistisches Bild von einem Dalmatiner, der beim Schwimmen im Meer eine Flagge im Maul trägt mit dem Schriftzung "in2code".</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
