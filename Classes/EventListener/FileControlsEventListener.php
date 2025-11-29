@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace In2code\Imager\EventListener;
 
 use In2code\Imager\Events\ButtonAllowedEvent;
+use In2code\Imager\Events\TemplateButtonEvent;
 use In2code\Imager\Utility\ConfigurationUtility;
 use In2code\Imager\Utility\RequestUtility;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -43,8 +44,12 @@ class FileControlsEventListener
 
     protected function getButtonHtml(CustomFileControlsEvent $event): string
     {
+        /** @var TemplateButtonEvent $eventTemplateButton */
+        $eventTemplateButton = $this->eventDispatcher->dispatch(new TemplateButtonEvent());
         $viewFactoryData = new ViewFactoryData(
-            templateRootPaths: ['EXT:imager/Resources/Private/Templates/Backend'],
+            templateRootPaths: $eventTemplateButton->getTemplates(),
+            partialRootPaths: $eventTemplateButton->getPartials(),
+            layoutRootPaths: $eventTemplateButton->getLayouts(),
             request: RequestUtility::getRequest(),
         );
         $view = $this->viewFactory->create($viewFactoryData);
@@ -52,7 +57,7 @@ class FileControlsEventListener
             'event' => $event,
             'promptPlaceholder' => ConfigurationUtility::getConfigurationByKey('promptPlaceholder'),
             'promptValue' => ConfigurationUtility::getConfigurationByKey('promptValue'),
-        ]);
+        ] + $eventTemplateButton->getAdditionialAssignments());
         return $view->render('FileButton');
     }
 
