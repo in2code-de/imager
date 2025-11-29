@@ -47,14 +47,16 @@ GOOGLE_API_KEY=your_api_key_from_google
 
 ## Extendability
 
-There are two events in EXT:imager that can be used to
+There are some events in EXT:imager that can be used to
 
-- decide to hide the button in backend
-- manipulte the URL and request values before sending to Gemini
+- Decide to hide the button in backend (\In2code\Imager\Events\ButtonAllowedEvent::class)
+- Manipulate or overrule the template of the rendered button in backend (\In2code\Imager\Events\TemplateButtonEvent::class)
+- Manipulte the URL and request values before sending to Gemini (\In2code\Imager\Events\BeforeRequestEvent::class)
 
 ## Changelog and breaking changes
 
-| Version | Date       | State   | Description                       |
-|---------|------------|---------|-----------------------------------|
-| 1.1.0   | 2025-11-27 | Task    | Add extension icon                |
-| 1.0.0   | 2025-11-27 | Task    | Initial release of in2code/imager |
+| Version | Date       | State   | Description                                                |
+|---------|------------|---------|------------------------------------------------------------|
+| 1.2.0   | 2025-11-29 | Feature | Add event to manipulate the rendered button in the backend |
+| 1.1.0   | 2025-11-27 | Task    | Add extension icon                                         |
+| 1.0.0   | 2025-11-27 | Task    | Initial release of in2code/imager                          |
