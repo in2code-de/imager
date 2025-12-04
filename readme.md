@@ -60,3 +60,24 @@ There are some events in EXT:imager that can be used to
 | 1.2.0   | 2025-11-29 | Feature | Add event to manipulate the rendered button in the backend |
 | 1.1.0   | 2025-11-27 | Task    | Add extension icon                                         |
 | 1.0.0   | 2025-11-27 | Task    | Initial release of in2code/imager                          |
+
+
+
+## Contribution with ddev
+
+This repository provides a [DDEV]()-backed development environment. If DDEV is installed, simply run the following
+commands to quickly set up a local environment with example usages:
+
+* `ddev start`
+* `ddev initialize`
+
+**Backend Login:**
+```
+Username: admin
+Password: admin
+```
+
+**Installation hint:**
+
+1. Install ddev before, see: https://ddev.readthedocs.io/en/stable/#installation
+2. Install git-lfs before, see: https://git-lfs.github.com/
