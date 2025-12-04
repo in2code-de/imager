@@ -57,6 +57,7 @@ There are some events in EXT:imager that can be used to
 
 | Version | Date       | State   | Description                                                |
 |---------|------------|---------|------------------------------------------------------------|
+| 1.3.0   | 2025-12-04 | Feature | Add ddev as local environment                              |
 | 1.2.0   | 2025-11-29 | Feature | Add event to manipulate the rendered button in the backend |
 | 1.1.0   | 2025-11-27 | Task    | Add extension icon                                         |
 | 1.0.0   | 2025-11-27 | Task    | Initial release of in2code/imager                          |
