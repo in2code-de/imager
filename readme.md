@@ -57,6 +57,7 @@ There are some events in EXT:imager that can be used to
 
 | Version | Date       | State   | Description                                                |
 |---------|------------|---------|------------------------------------------------------------|
+| 1.4.0   | 2025-12-07 | Feature | Support TYPO3 14                                           |
 | 1.3.0   | 2025-12-04 | Feature | Add ddev as local environment                              |
 | 1.2.0   | 2025-11-29 | Feature | Add event to manipulate the rendered button in the backend |
 | 1.1.0   | 2025-11-27 | Task    | Add extension icon                                         |
@@ -82,3 +83,8 @@ Password: admin
 
 1. Install ddev before, see: https://ddev.readthedocs.io/en/stable/#installation
 2. Install git-lfs before, see: https://git-lfs.github.com/
+3. You can add the gemini API key in `.ddev/.env`:
+
+```
+GOOGLE_API_KEY=your_api_key_from_google
+```
