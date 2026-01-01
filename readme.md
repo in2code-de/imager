@@ -182,13 +182,14 @@ and temporary file handling, so you only need to implement the image generation 
 
 ## Changelog and breaking changes
 
-| Version | Date       | State   | Description                                                |
-|---------|------------|---------|------------------------------------------------------------|
-| 1.4.0   | 2025-12-07 | Feature | Support TYPO3 14                                           |
-| 1.3.0   | 2025-12-04 | Feature | Add ddev as local environment                              |
-| 1.2.0   | 2025-11-29 | Feature | Add event to manipulate the rendered button in the backend |
-| 1.1.0   | 2025-11-27 | Task    | Add extension icon                                         |
-| 1.0.0   | 2025-11-27 | Task    | Initial release of in2code/imager                          |
+| Version | Date       | State   | Description                                                  |
+|---------|------------|---------|--------------------------------------------------------------|
+| 2.0.0   | 2026-01-01 | Feature | Support overruling of LlmRepository with a custom repository |
+| 1.4.0   | 2025-12-07 | Feature | Support TYPO3 14                                             |
+| 1.3.0   | 2025-12-04 | Feature | Add ddev as local environment                                |
+| 1.2.0   | 2025-11-29 | Feature | Add event to manipulate the rendered button in the backend   |
+| 1.1.0   | 2025-11-27 | Task    | Add extension icon                                           |
+| 1.0.0   | 2025-11-27 | Task    | Initial release of in2code/imager                            |
 
 
 
