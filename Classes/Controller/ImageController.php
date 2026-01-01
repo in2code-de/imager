@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\Imager\Controller;
 
-use In2code\Imager\Domain\Repository\LlmRepository;
+use In2code\Imager\Domain\Repository\Llm\RepositoryInterface;
 use In2code\Imager\Exception\ParameterException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,7 +16,7 @@ use TYPO3\CMS\Core\Resource\File;
 
 /**
  * Class ImageController
- * returns a new generated image to backend
+ * returns a new generated image to the backend
  */
 class ImageController
 {
@@ -28,7 +28,7 @@ class ImageController
 
     public function __construct(
         protected readonly ConnectionPool $connectionPool,
-        protected readonly LlmRepository $llmRepository,
+        protected readonly RepositoryInterface $llmRepository,
     ) {
     }
 

@@ -16,10 +16,11 @@ Example graphic in frontend:
 
 ## Google Gemini with Nano Banana
 
-- To use the extension, you need a **Google Gemini API** key. You can register for one 
+- To use the extension, you need a **Google Gemini API** key. You can register for one
     at https://aistudio.google.com/app/api-keys.
 - Look at https://ai.google.dev/gemini-api/docs/image-generation?hl=de#rest_22 for example prompts and to learn
     more about the power of Gemini image creation
+- Alternatively, you can implement your own LLM provider (see [Custom LLM Integration](#custom-llm-integration-like-dall-e-stable-diffusion-midjourney-etc) below).
 
 ## Installation
 
@@ -52,6 +53,122 @@ There are some events in EXT:imager that can be used to
 - Decide to hide the button in backend (\In2code\Imager\Events\ButtonAllowedEvent::class)
 - Manipulate or overrule the template of the rendered button in backend (\In2code\Imager\Events\TemplateButtonEvent::class)
 - Manipulte the URL and request values before sending to Gemini (\In2code\Imager\Events\BeforeRequestEvent::class)
+
+## Custom LLM Integration (like DALL-E, Stable Diffusion, Midjourney, etc.)
+
+Imager uses a factory pattern to allow custom LLM providers. By default, it uses Google Gemini,
+but you can easily integrate other AI services (OpenAI DALL-E, Stable Diffusion, Midjourney, etc.).
+
+### Implementing a Custom LLM Repository
+
+1. Create a custom repository class implementing `RepositoryInterface` - see example for OpenAI DALL-E:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Vendor\MyExtension\Domain\Repository\Llm;
+
+use In2code\Imager\Domain\Repository\Llm\AbstractRepository;
+use In2code\Imager\Domain\Repository\Llm\RepositoryInterface;
+use In2code\Imager\Exception\ApiException;
+use In2code\Imager\Exception\ConfigurationException;
+use TYPO3\CMS\Core\Http\RequestFactory;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\StorageRepository;
+
+class DallERepository extends AbstractRepository implements RepositoryInterface
+{
+    private string $apiKey = '';
+    private string $apiUrl = 'https://api.openai.com/v1/images/generations';
+
+    public function __construct(
+        protected StorageRepository $storageRepository,
+        protected ResourceFactory $resourceFactory,
+        protected RequestFactory $requestFactory,
+    ) {
+        parent::__construct($storageRepository, $resourceFactory, $requestFactory);
+        $this->apiKey = getenv('OPENAI_API_KEY') ?: '';
+    }
+
+    public function checkApiKey(): void
+    {
+        if ($this->apiKey === '') {
+            throw new ConfigurationException('OpenAI API key not configured', 1735646100);
+        }
+    }
+
+    public function getApiUrl(): string
+    {
+        return $this->apiUrl;
+    }
+
+    public function getImage(string $prompt): File
+    {
+        $this->checkApiKey();
+        $imageData = $this->generateImageWithDallE($prompt);
+        return $this->saveImageToStorage($imageData, $prompt);
+    }
+
+    protected function generateImageWithDallE(string $prompt): string
+    {
+        $payload = [
+            'model' => 'dall-e-3',
+            'prompt' => $prompt,
+            'n' => 1,
+            'size' => '1024x1024',
+            'response_format' => 'b64_json',
+        ];
+
+        $options = [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->apiKey,
+                'Content-Type' => 'application/json',
+            ],
+            'body' => json_encode($payload),
+        ];
+
+        $response = $this->requestFactory->request($this->getApiUrl(), $this->requestMethod, $options);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new ApiException(
+                'Failed to generate image with DALL-E: ' . $response->getBody()->getContents(),
+                1735646101
+            );
+        }
+
+        $responseData = json_decode($response->getBody()->getContents(), true);
+
+        if (isset($responseData['data'][0]['b64_json']) === false) {
+            throw new ApiException('Invalid DALL-E API response structure', 1735646102);
+        }
+
+        $this->mimeType = 'image/png';
+        return base64_decode($responseData['data'][0]['b64_json']);
+    }
+}
+```
+
+2. Register your custom repository in `ext_localconf.php`:
+
+```php
+<?php
+defined('TYPO3') || die();
+
+// Register custom LLM repository
+$GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['imager']['llmRepositoryClass']
+    = \Vendor\MyExtension\Domain\Repository\Llm\DallERepository::class;
+```
+
+3. Don't forget to:
+   - Register your Repository in your `Services.yaml`
+   - Set the required API key (e.g., `OPENAI_API_KEY` environment variable)
+   - Flush TYPO3 caches after registration
+
+**Hint**: The `AbstractRepository` base class provides methods for file storage, folder management,
+and temporary file handling, so you only need to implement the image generation logic specific to your LLM provider.
 
 ## Changelog and breaking changes
 

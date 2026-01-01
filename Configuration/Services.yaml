@@ -10,5 +10,12 @@ services:
   In2code\Imager\Controller\ImageController:
     public: true
 
-  In2code\Imager\Domain\Repository\LlmRepository:
+  In2code\Imager\Domain\Repository\Llm\:
+    resource: '../Classes/Domain/Repository/Llm/*.php'
+    exclude: '../Classes/Domain/Repository/Llm/{AbstractRepository.php,RepositoryInterface.php}'
     public: true
+
+  In2code\Imager\Domain\Repository\Llm\RepositoryInterface:
+    factory:
+      - '@In2code\Imager\Domain\Repository\Llm\LlmRepositoryFactory'
+      - 'create'
