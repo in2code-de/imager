@@ -1,5 +1,15 @@
 # Imager - AI generated images in TYPO3 with Google Gemini (Nano Banana)
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Google Gemini with Nano Banana](#google-gemini-with-nano-banana)
+- [Installation](#installation)
+- [Extendability](#extendability)
+- [Custom LLM Integration](#custom-llm-integration-like-dall-e-stable-diffusion-midjourney-etc)
+- [Changelog and breaking changes](#changelog-and-breaking-changes)
+- [Contribution with ddev](#contribution-with-ddev)
+
 ## Introduction
 
 This allows editors to generate AI-generated images directly in the TYPO3 backend. 
