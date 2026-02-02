@@ -184,6 +184,7 @@ and temporary file handling, so you only need to implement the image generation 
 
 | Version | Date       | State   | Description                                                  |
 |---------|------------|---------|--------------------------------------------------------------|
+| 2.0.1   | 2026-02-02 | Task    | Add funding section to composer.json file                    |
 | 2.0.0   | 2026-01-01 | Feature | Support overruling of LlmRepository with a custom repository |
 | 1.4.0   | 2025-12-07 | Feature | Support TYPO3 14                                             |
 | 1.3.0   | 2025-12-04 | Feature | Add ddev as local environment                                |
