@@ -24,6 +24,20 @@ Example backend integration:
 Example graphic in frontend:
 ![documentation_frontend.png](Documentation/Images/documentation_frontend.png)
 
+## Two ways to generate images
+
+Imager offers two independent workflows:
+
+1. **Inline in any record** – a "Create AI image" button is added to image reference fields
+   (e.g. in content elements). The editor enters a prompt and the generated image is attached
+   directly to that record.
+2. **Backend module "AI Imager"** (below *File*) – a standalone workspace where editors pick a
+   folder in the file tree (only folders they have access to), describe an image and receive
+   **four candidates** from Gemini. They can either click a candidate to save it in high resolution
+   into the folder, or select a candidate and refine it further with an adjusted prompt
+   (image-to-image). All images of the selected folder are always shown below the prompt as a tile
+   view.
+
 ## Google Gemini with Nano Banana
 
 - To use the extension, you need a **Google Gemini API** key. You can register for one
@@ -70,6 +84,12 @@ There are some events in EXT:imager that can be used to
 Imager uses a factory pattern to allow custom LLM providers. By default, it uses Google Gemini,
 but you can easily integrate other AI services (OpenAI DALL-E, Stable Diffusion, Midjourney, etc.).
 
+> **Breaking change in 3.0.0:** `RepositoryInterface` now additionally requires the method
+> `generateCandidates(GenerationRequest $request): array` (returning `ImageCandidate[]`) which powers
+> the backend module. In addition `AbstractRepository::saveImageToStorage()` now expects an
+> `ImageCandidate` instead of a raw string. Existing custom repositories must be adjusted accordingly
+> – see the updated example below.
+
 ### Implementing a Custom LLM Repository
 
 1. Create a custom repository class implementing `RepositoryInterface` - see example for OpenAI DALL-E:
@@ -81,6 +101,8 @@ declare(strict_types=1);
 
 namespace Vendor\MyExtension\Domain\Repository\Llm;
 
+use In2code\Imager\Domain\Model\GenerationRequest;
+use In2code\Imager\Domain\Model\ImageCandidate;
 use In2code\Imager\Domain\Repository\Llm\AbstractRepository;
 use In2code\Imager\Domain\Repository\Llm\RepositoryInterface;
 use In2code\Imager\Exception\ApiException;
@@ -119,15 +141,28 @@ class DallERepository extends AbstractRepository implements RepositoryInterface
     public function getImage(string $prompt): File
     {
         $this->checkApiKey();
-        $imageData = $this->generateImageWithDallE($prompt);
-        return $this->saveImageToStorage($imageData, $prompt);
+        $candidate = $this->requestImage(new GenerationRequest($prompt));
+        return $this->saveImageToStorage($candidate, $prompt);
     }
 
-    protected function generateImageWithDallE(string $prompt): string
+    /**
+     * @return ImageCandidate[]
+     */
+    public function generateCandidates(GenerationRequest $request): array
+    {
+        $this->checkApiKey();
+        $candidates = [];
+        for ($index = 0; $index < $request->getCount(); $index++) {
+            $candidates[] = $this->requestImage($request);
+        }
+        return $candidates;
+    }
+
+    protected function requestImage(GenerationRequest $request): ImageCandidate
     {
         $payload = [
             'model' => 'dall-e-3',
-            'prompt' => $prompt,
+            'prompt' => $request->getPrompt(),
             'n' => 1,
             'size' => '1024x1024',
             'response_format' => 'b64_json',
@@ -156,8 +191,7 @@ class DallERepository extends AbstractRepository implements RepositoryInterface
             throw new ApiException('Invalid DALL-E API response structure', 1735646102);
         }
 
-        $this->mimeType = 'image/png';
-        return base64_decode($responseData['data'][0]['b64_json']);
+        return new ImageCandidate(base64_decode($responseData['data'][0]['b64_json']), 'image/png');
     }
 }
 ```
@@ -183,9 +217,10 @@ and temporary file handling, so you only need to implement the image generation 
 
 ## Changelog and breaking changes
 
-| Version | Date       | State   | Description                                                         |
-|---------|------------|---------|---------------------------------------------------------------------|
-| 2.1.0   | 2026-07-05 | Feature | Make model overwritable via extension configuration or ENV variable |
+| Version | Date       | State    | Description                                                                                                                       |
+|---------|------------|----------|----------------------------------------------------------------------------------------------------------------------------------|
+| 3.0.0   | 2026-07-05 | Breaking | New "AI Imager" backend module (folder based, 4 candidates, image-to-image refinement). Interface `RepositoryInterface` extended |
+| 2.1.0   | 2026-07-05 | Feature  | Make model overwritable via extension configuration or ENV variable                                                              |
 | 2.0.1   | 2026-02-02 | Task    | Add funding section to composer.json file                           |
 | 2.0.0   | 2026-01-01 | Feature | Support overruling of LlmRepository with a custom repository        |
 | 1.4.0   | 2025-12-07 | Feature | Support TYPO3 14                                                    |

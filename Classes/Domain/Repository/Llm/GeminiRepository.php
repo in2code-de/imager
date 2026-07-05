@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace In2code\Imager\Domain\Repository\Llm;
 
+use In2code\Imager\Domain\Model\GenerationRequest;
+use In2code\Imager\Domain\Model\ImageCandidate;
 use In2code\Imager\Events\BeforeRequestEvent;
 use In2code\Imager\Exception\ApiException;
 use In2code\Imager\Exception\ConfigurationException;
@@ -16,6 +18,10 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 
 class GeminiRepository extends AbstractRepository implements RepositoryInterface
 {
+    private const DEFAULT_ASPECT_RATIO = '16:9';
+    private const SEED_MIN = 1;
+    private const SEED_MAX = 2147483647;
+
     private string $apiKey;
     private string $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
     private string $model;
@@ -46,42 +52,40 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
     public function getImage(string $prompt): File
     {
         $this->checkApiKey();
-        $imageData = $this->generateImageContentWithGemini($prompt);
-        return $this->saveImageToStorage($imageData, $prompt);
+        $candidate = $this->requestImage(new GenerationRequest($prompt));
+        return $this->saveImageToStorage($candidate, $prompt);
     }
 
     /**
-     * Generate image content using Google Gemini API
+     * @return ImageCandidate[]
+     */
+    public function generateCandidates(GenerationRequest $request): array
+    {
+        $this->checkApiKey();
+        $candidates = [];
+        for ($index = 0; $index < $request->getCount(); $index++) {
+            $candidates[] = $this->requestImage($request, random_int(self::SEED_MIN, self::SEED_MAX));
+        }
+        return $candidates;
+    }
+
+    /**
+     * Request a single image from the Google Gemini API. Supports image-to-image editing when the
+     * request carries a base image.
      *
-     * @param string $prompt
-     * @return string Binary image data
+     * A distinct seed per request enforces variation between candidates. This is essential for
+     * image-to-image refinement, where identical requests would otherwise return identical results.
+     *
      * @throws ApiException
      */
-    protected function generateImageContentWithGemini(string $prompt): string
+    protected function requestImage(GenerationRequest $request, ?int $seed = null): ImageCandidate
     {
-        $payload = [
-            'contents' => [
-                [
-                    'parts' => [
-                        [
-                            'text' => ConfigurationUtility::getConfigurationByKey('promptPrefix') . PHP_EOL . $prompt,
-                        ],
-                    ],
-                ],
-            ],
-            'generationConfig' => [
-                'responseModalities' => ['image'],
-                'imageConfig' => [
-                    'aspectRatio' => ConfigurationUtility::getConfigurationByKey('aspectRatio') ?: '16:9',
-                ],
-            ],
-        ];
         $additionalOptions = [
             'headers' => [
                 'x-goog-api-key' => $this->apiKey,
                 'Content-Type' => 'application/json',
             ],
-            'body' => json_encode($payload),
+            'body' => json_encode($this->buildPayload($request, $seed)),
         ];
         $event = $this->eventDispatcher->dispatch(
             new BeforeRequestEvent($this->getApiUrl(), $additionalOptions)
@@ -94,12 +98,60 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
         if (isset($responseData['candidates'][0]['content']['parts']) === false) {
             throw new ApiException('Invalid response from Gemini API: ' . json_encode($responseData), 1764248402);
         }
-        foreach ($responseData['candidates'][0]['content']['parts'] as $part) {
+        return $this->extractCandidate($responseData['candidates'][0]['content']['parts']);
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $parts
+     * @throws ApiException
+     */
+    protected function extractCandidate(array $parts): ImageCandidate
+    {
+        foreach ($parts as $part) {
             if (isset($part['inlineData']['data'])) {
-                $this->mimeType = $part['inlineData']['mimeType'] ?? 'image/png';
-                return base64_decode($part['inlineData']['data']);
+                return new ImageCandidate(
+                    base64_decode($part['inlineData']['data']),
+                    $part['inlineData']['mimeType'] ?? 'image/png'
+                );
             }
         }
         throw new ApiException('No image data found in response', 1764248403);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function buildPayload(GenerationRequest $request, ?int $seed = null): array
+    {
+        $parts = [];
+        if ($request->hasBaseImage()) {
+            $baseImage = $request->getBaseImage();
+            $parts[] = [
+                'inlineData' => [
+                    'mimeType' => $baseImage->getMimeType(),
+                    'data' => base64_encode($baseImage->getData()),
+                ],
+            ];
+        }
+        $parts[] = [
+            'text' => ConfigurationUtility::getConfigurationByKey('promptPrefix') . PHP_EOL . $request->getPrompt(),
+        ];
+        $generationConfig = [
+            'responseModalities' => ['image'],
+            'imageConfig' => [
+                'aspectRatio' => ConfigurationUtility::getConfigurationByKey('aspectRatio') ?: self::DEFAULT_ASPECT_RATIO,
+            ],
+        ];
+        if ($seed !== null) {
+            $generationConfig['seed'] = $seed;
+        }
+        return [
+            'contents' => [
+                [
+                    'parts' => $parts,
+                ],
+            ],
+            'generationConfig' => $generationConfig,
+        ];
     }
 }

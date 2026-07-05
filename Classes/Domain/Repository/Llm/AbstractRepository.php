@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace In2code\Imager\Domain\Repository\Llm;
 
+use In2code\Imager\Domain\Model\ImageCandidate;
 use In2code\Imager\Utility\ConfigurationUtility;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
@@ -15,7 +16,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractRepository
 {
     protected string $requestMethod = 'POST';
-    protected string $mimeType = 'image/jpeg';
 
     public function __construct(
         protected StorageRepository $storageRepository,
@@ -24,32 +24,24 @@ abstract class AbstractRepository
     ) {
     }
 
-    protected function saveImageToStorage(string $imageData, string $prompt): File
+    protected function saveImageToStorage(ImageCandidate $candidate, string $prompt): File
     {
         $combinedIdentifier = ConfigurationUtility::getConfigurationByKey('combinedIdentifier');
         $storage = $this->storageRepository->findByCombinedIdentifier($combinedIdentifier);
-        $tempFile = $this->createTempFile($imageData);
+        $tempFile = $this->createTempFile($candidate->getData());
         try {
             $this->ensureFolderExists($combinedIdentifier);
             $folder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
-            $file = $storage->addFile($tempFile, $folder, $this->generateFileName($prompt));
+            $file = $storage->addFile($tempFile, $folder, $this->generateFileName($prompt, $candidate->getFileExtension()));
         } finally {
             $this->cleanupTempFile($tempFile);
         }
         return $file;
     }
 
-    protected function generateFileName(string $prompt): string
+    protected function generateFileName(string $prompt, string $extension): string
     {
-        return sprintf('ai_generated_%d_%s.' . $this->getExtension(), time(), md5($prompt));
-    }
-
-    protected function getExtension(): string
-    {
-        if (stristr($this->mimeType, 'png') !== false) {
-            return 'png';
-        }
-        return 'jpg';
+        return sprintf('ai_generated_%d_%s.%s', time(), md5($prompt), $extension);
     }
 
     protected function createTempFile(string $imageData): string
@@ -62,7 +54,7 @@ abstract class AbstractRepository
     protected function cleanupTempFile(string $tempFile): void
     {
         if (file_exists($tempFile)) {
-            @unlink($tempFile);
+            GeneralUtility::unlink_tempfile($tempFile);
         }
     }
 
@@ -70,7 +62,7 @@ abstract class AbstractRepository
     {
         try {
             $this->resourceFactory->getFolderObjectFromCombinedIdentifier($combinedIdentifier);
-        } catch (FolderDoesNotExistException $exception) {
+        } catch (FolderDoesNotExistException) {
             $storage = $this->storageRepository->findByCombinedIdentifier($combinedIdentifier);
             $basePath = $storage->getConfiguration()['basePath'];
             $parts = explode(':', $combinedIdentifier, 2);

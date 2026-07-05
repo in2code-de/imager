@@ -1,0 +1,92 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <f:variable name="l" value="LLL:EXT:imager/Resources/Private/Language/Backend/locallang.xlf:" />
+
+    <f:if condition="{folderSelected}">
+        <f:then>
+            <div
+                class="imager-module"
+                data-imager-folder="{folderIdentifier}"
+                data-imager-writable="{f:if(condition: writable, then: '1', else: '0')}"
+                data-label-save="{f:translate(key: '{l}module.candidate.save')}"
+                data-label-refine="{f:translate(key: '{l}module.candidate.refine')}"
+                data-label-generating="{f:translate(key: '{l}module.generating')}"
+                data-label-refineactive="{f:translate(key: '{l}module.refine.active')}"
+                data-label-saved="{f:translate(key: '{l}module.saved')}"
+                data-label-error="{f:translate(key: '{l}module.error')}"
+                data-label-saveerror="{f:translate(key: '{l}module.saveError')}"
+            >
+                <h1>{f:translate(key: '{l}module.headline')}</h1>
+                <p class="text-muted">
+                    <core:icon identifier="apps-filetree-folder-default" size="small" />
+                    <strong>{folderName}</strong>
+                </p>
+
+                <f:if condition="{writable}">
+                    <f:else>
+                        <div class="alert alert-warning">
+                            {f:translate(key: '{l}module.notWritable')}
+                        </div>
+                    </f:else>
+                </f:if>
+
+                <div class="form-group">
+                    <label class="form-label" for="imager-prompt">{f:translate(key: '{l}module.prompt.label')}</label>
+                    <textarea
+                        id="imager-prompt"
+                        class="form-control"
+                        data-imager-prompt
+                        rows="3"
+                        placeholder="{promptPlaceholder}">{defaultPrompt}</textarea>
+                    <div class="imager-module__refinehint" data-imager-refinehint hidden></div>
+                    <button type="button" class="btn btn-primary mt-2" data-imager-action="generate">
+                        <core:icon identifier="actions-image" size="small" />
+                        {f:translate(key: '{l}module.generate')}
+                    </button>
+                    <button type="button" class="btn btn-default mt-2" data-imager-action="resetRefine" hidden>
+                        {f:translate(key: '{l}module.refine.reset')}
+                    </button>
+                </div>
+
+                <div class="imager-module__candidates" data-imager-candidates hidden>
+                    <h2>{f:translate(key: '{l}module.candidates.headline')}</h2>
+                    <div class="imager-grid" data-imager-candidates-grid></div>
+                </div>
+
+                <hr />
+
+                <h2>{f:translate(key: '{l}module.folderImages.headline')}</h2>
+                <f:if condition="{images}">
+                    <f:then>
+                        <div class="imager-grid">
+                            <f:for each="{images}" as="image">
+                                <div class="imager-tile">
+                                    <a href="{image.url}" target="_blank" rel="noreferrer">
+                                        <img src="{image.thumbnail}" alt="{image.name}" loading="lazy" />
+                                    </a>
+                                    <div class="imager-tile__meta" title="{image.name}">{image.name}</div>
+                                </div>
+                            </f:for>
+                        </div>
+                    </f:then>
+                    <f:else>
+                        <p class="text-muted">{f:translate(key: '{l}module.folderImages.empty')}</p>
+                    </f:else>
+                </f:if>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="alert alert-info">
+                {f:translate(key: '{l}module.selectFolder')}
+            </div>
+        </f:else>
+    </f:if>
+</f:section>
+</html>

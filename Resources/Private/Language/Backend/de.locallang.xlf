@@ -19,6 +19,70 @@
 				<source>Create a photorealistic image of a Dalmatian swimming in the sea with a flag in its mouth bearing the inscription "in2code".</source>
 				<target state="translated">Erstelle ein fotorealistisches Bild von einem Dalmatiner, der beim Schwimmen im Meer eine Flagge im Maul trägt mit dem Schriftzung "in2code".</target>
 			</trans-unit>
+			<trans-unit id="module.headline">
+				<source>Generate AI images</source>
+				<target state="translated">KI-Bilder erzeugen</target>
+			</trans-unit>
+			<trans-unit id="module.selectFolder">
+				<source>Please select a folder in the file tree on the left to generate and store AI images.</source>
+				<target state="translated">Bitte wählen Sie links im Dateibaum einen Ordner aus, um KI-Bilder zu erzeugen und zu speichern.</target>
+			</trans-unit>
+			<trans-unit id="module.notWritable">
+				<source>You do not have write access to this folder. Generated images cannot be saved here.</source>
+				<target state="translated">Sie haben keinen Schreibzugriff auf diesen Ordner. Erzeugte Bilder können hier nicht gespeichert werden.</target>
+			</trans-unit>
+			<trans-unit id="module.prompt.label">
+				<source>Describe the image you want to generate</source>
+				<target state="translated">Beschreiben Sie das Bild, das erzeugt werden soll</target>
+			</trans-unit>
+			<trans-unit id="module.generate">
+				<source>Generate 4 images</source>
+				<target state="translated">4 Bilder erzeugen</target>
+			</trans-unit>
+			<trans-unit id="module.generating">
+				<source>Generating images…</source>
+				<target state="translated">Bilder werden erzeugt…</target>
+			</trans-unit>
+			<trans-unit id="module.refine.active">
+				<source>A candidate is selected as base image. Adjust your prompt and generate again to refine it.</source>
+				<target state="translated">Ein Vorschlag ist als Basisbild ausgewählt. Passen Sie den Prompt an und erzeugen Sie erneut, um ihn zu verfeinern.</target>
+			</trans-unit>
+			<trans-unit id="module.refine.reset">
+				<source>Cancel refinement</source>
+				<target state="translated">Verfeinerung abbrechen</target>
+			</trans-unit>
+			<trans-unit id="module.candidate.save">
+				<source>Save</source>
+				<target state="translated">Speichern</target>
+			</trans-unit>
+			<trans-unit id="module.candidate.refine">
+				<source>Refine</source>
+				<target state="translated">Verfeinern</target>
+			</trans-unit>
+			<trans-unit id="module.candidates.headline">
+				<source>Generated candidates</source>
+				<target state="translated">Erzeugte Vorschläge</target>
+			</trans-unit>
+			<trans-unit id="module.folderImages.headline">
+				<source>Images in this folder</source>
+				<target state="translated">Bilder in diesem Ordner</target>
+			</trans-unit>
+			<trans-unit id="module.folderImages.empty">
+				<source>This folder does not contain any images yet.</source>
+				<target state="translated">Dieser Ordner enthält noch keine Bilder.</target>
+			</trans-unit>
+			<trans-unit id="module.saved">
+				<source>Image saved</source>
+				<target state="translated">Bild gespeichert</target>
+			</trans-unit>
+			<trans-unit id="module.error">
+				<source>Image generation failed</source>
+				<target state="translated">Bilderzeugung fehlgeschlagen</target>
+			</trans-unit>
+			<trans-unit id="module.saveError">
+				<source>Saving the image failed</source>
+				<target state="translated">Speichern des Bildes fehlgeschlagen</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

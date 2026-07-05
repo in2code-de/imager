@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2026-07-05T12:00:00Z" product-name="imager">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab">
+				<source>AI Imager</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tablabel">
+				<source>Generate AI images</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr">
+				<source>Generate AI images with Google Gemini directly into a selected folder.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

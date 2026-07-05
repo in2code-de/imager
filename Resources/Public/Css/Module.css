@@ -1,0 +1,58 @@
+.imager-module__refinehint {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    background-color: var(--typo3-state-info-bg, #cfe8fc);
+    color: var(--typo3-state-info-color, #003d61);
+    font-size: 0.875rem;
+}
+
+.imager-module__candidates {
+    margin-top: 1.5rem;
+}
+
+.imager-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.imager-tile {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--typo3-component-border-color, #d7d7d7);
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: var(--typo3-component-bg, #fff);
+}
+
+.imager-tile img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+}
+
+.imager-tile__meta {
+    padding: 0.5rem;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.imager-tile__actions {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.imager-tile--candidate img {
+    cursor: default;
+}
+
+.imager-tile--selected {
+    outline: 3px solid var(--typo3-component-primary-color, #0078e6);
+    outline-offset: -3px;
+}

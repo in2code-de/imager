@@ -7,6 +7,7 @@ namespace In2code\Imager\EventListener;
 use In2code\Imager\Events\ButtonAllowedEvent;
 use In2code\Imager\Events\TemplateButtonEvent;
 use In2code\Imager\Utility\ConfigurationUtility;
+use In2code\Imager\Utility\ImageFormatUtility;
 use In2code\Imager\Utility\RequestUtility;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent;
@@ -83,14 +84,11 @@ class FileControlsEventListener
 
     protected function isImageType(CustomFileControlsEvent $event): bool
     {
-        $allowed = [
-            'png',
-            'jpg',
-            'jpeg',
-            'webp',
-        ];
         $formatList = $event->getFieldConfig()['allowed'] ?? $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'];
-        $intersection = array_intersect($allowed, GeneralUtility::trimExplode(',', $formatList, true));
+        $intersection = array_intersect(
+            ImageFormatUtility::ALLOWED_EXTENSIONS,
+            GeneralUtility::trimExplode(',', $formatList, true)
+        );
         return $intersection !== [];
     }
 }
