@@ -16,12 +16,9 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 
 class GeminiRepository extends AbstractRepository implements RepositoryInterface
 {
-    private string $apiKey = '';
+    private string $apiKey;
     private string $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/';
-    private array $models = [
-        '2_5_flash_image' => 'gemini-2.5-flash-image:generateContent',
-        '3_pro_image_preview' => 'gemini-3-pro-image-preview:generateContent',
-    ];
+    private string $model;
 
     public function __construct(
         protected StorageRepository $storageRepository,
@@ -31,6 +28,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
     ) {
         parent::__construct($storageRepository, $resourceFactory, $requestFactory);
         $this->apiKey = getenv('GOOGLE_API_KEY') ?: ConfigurationUtility::getConfigurationByKey('apiKey') ?: '';
+        $this->model = ConfigurationUtility::getModel();
     }
 
     public function checkApiKey(): void
@@ -42,8 +40,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
 
     public function getApiUrl(): string
     {
-        $model = $this->models[ConfigurationUtility::getConfigurationByKey('model')] ?? $this->models['3_pro_image_preview'];
-        return $this->apiUrl . $model;
+        return $this->apiUrl . $this->model;
     }
 
     public function getImage(string $prompt): File
