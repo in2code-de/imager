@@ -7,18 +7,21 @@ namespace In2code\Imager\Controller;
 use In2code\Imager\Domain\Model\GenerationRequest;
 use In2code\Imager\Domain\Model\ImageCandidate;
 use In2code\Imager\Domain\Repository\Llm\RepositoryInterface;
+use In2code\Imager\Domain\Service\AiAreaPreference;
 use In2code\Imager\Domain\Service\CandidateStorage;
 use In2code\Imager\Domain\Service\FolderImageService;
 use In2code\Imager\Exception\ParameterException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 
 /**
  * Class GeneratorAjaxController
- * handles the asynchronous actions of the backend module: generating four candidates (optionally
- * refining a previously generated candidate) and saving a picked candidate into the selected folder.
+ * handles the asynchronous actions of the AI image area in the file list module: generating four
+ * candidates (optionally refining a previously generated candidate), saving a picked candidate into
+ * the current folder and persisting the "Show AI area" toggle state.
  */
 #[AsController]
 class GeneratorAjaxController
@@ -29,6 +32,7 @@ class GeneratorAjaxController
         private readonly RepositoryInterface $llmRepository,
         private readonly CandidateStorage $candidateStorage,
         private readonly FolderImageService $folderImageService,
+        private readonly AiAreaPreference $aiAreaPreference,
     ) {
     }
 
@@ -40,7 +44,7 @@ class GeneratorAjaxController
             if ($prompt === '') {
                 throw new ParameterException('Prompt must not be empty', 1764250100);
             }
-            $scope = $this->getScope($request);
+            $scope = $this->getScope();
             $baseImage = $this->resolveBaseImage($scope, (string)($body['baseToken'] ?? ''));
             $this->candidateStorage->clear($scope);
             $generationRequest = new GenerationRequest($prompt, self::CANDIDATE_COUNT, $baseImage);
@@ -66,7 +70,7 @@ class GeneratorAjaxController
     {
         try {
             $body = $request->getParsedBody() ?? [];
-            $scope = $this->getScope($request);
+            $scope = $this->getScope();
             $candidate = $this->candidateStorage->get($scope, (string)($body['candidate'] ?? ''));
             if ($candidate === null) {
                 throw new ParameterException('Candidate not found', 1764250102);
@@ -91,6 +95,17 @@ class GeneratorAjaxController
         return $response;
     }
 
+    public function toggle(ServerRequestInterface $request): ResponseInterface
+    {
+        $backendUser = $this->getBackendUser();
+        if ($backendUser === null) {
+            return new JsonResponse(['success' => false], 403);
+        }
+        $enabled = ($request->getParsedBody()['enabled'] ?? '') === '1';
+        $this->aiAreaPreference->set($backendUser, $enabled);
+        return new JsonResponse(['success' => true, 'enabled' => $enabled]);
+    }
+
     private function resolveBaseImage(int $scope, string $baseToken): ?ImageCandidate
     {
         $baseImage = null;
@@ -103,9 +118,13 @@ class GeneratorAjaxController
         return $baseImage;
     }
 
-    private function getScope(ServerRequestInterface $request): int
+    private function getScope(): int
     {
-        $backendUser = $request->getAttribute('backend.user');
-        return (int)($backendUser?->user['uid'] ?? 0);
+        return (int)($this->getBackendUser()?->user['uid'] ?? 0);
+    }
+
+    private function getBackendUser(): ?BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }

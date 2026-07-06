@@ -31,12 +31,14 @@ Imager offers two independent workflows:
 1. **Inline in any record** – a "Create AI image" button is added to image reference fields
    (e.g. in content elements). The editor enters a prompt and the generated image is attached
    directly to that record.
-2. **Backend module "AI Imager"** (below *File*) – a standalone workspace where editors pick a
-   folder in the file tree (only folders they have access to), describe an image and receive
-   **four candidates** from Gemini. They can either click a candidate to save it in high resolution
-   into the folder, or select a candidate and refine it further with an adjusted prompt
-   (image-to-image). All images of the selected folder are always shown below the prompt as a tile
-   view.
+2. **AI area in the File list module** – the core *File > Filelist* module gets an additional
+   "Show AI area" entry in its "View" dropdown (next to "Show thumbnails" / "Show clipboard"). When
+   enabled, a prompt area appears on top of the file list. Submitting a prompt returns **four
+   candidates** from Gemini shown at the very top. Editors can click a candidate to save it in high
+   resolution into the currently selected folder, or refine a candidate further with an adjusted
+   prompt (image-to-image). The saved image then appears in the normal file list below. The toggle
+   state is stored per backend user. Saving always targets the folder currently open in the file
+   list and respects the editor's write permissions.
 
 ## Google Gemini with Nano Banana
 
@@ -219,7 +221,7 @@ and temporary file handling, so you only need to implement the image generation 
 
 | Version | Date       | State    | Description                                                                                                                       |
 |---------|------------|----------|----------------------------------------------------------------------------------------------------------------------------------|
-| 3.0.0   | 2026-07-05 | Breaking | New "AI Imager" backend module (folder based, 4 candidates, image-to-image refinement). Interface `RepositoryInterface` extended |
+| 3.0.0   | 2026-07-05 | Breaking | AI area integrated into the File list module (4 candidates, image-to-image refinement, save into current folder). Interface `RepositoryInterface` extended |
 | 2.1.0   | 2026-07-05 | Feature  | Make model overwritable via extension configuration or ENV variable                                                              |
 | 2.0.1   | 2026-02-02 | Task    | Add funding section to composer.json file                           |
 | 2.0.0   | 2026-01-01 | Feature | Support overruling of LlmRepository with a custom repository        |

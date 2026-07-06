@@ -15,14 +15,8 @@
 			<trans-unit id="prompt.value">
 				<source>Create a photorealistic image of a Dalmatian swimming in the sea with a flag in its mouth bearing the inscription "in2code".</source>
 			</trans-unit>
-			<trans-unit id="module.headline">
-				<source>Generate AI images</source>
-			</trans-unit>
-			<trans-unit id="module.selectFolder">
-				<source>Please select a folder in the file tree on the left to generate and store AI images.</source>
-			</trans-unit>
-			<trans-unit id="module.notWritable">
-				<source>You do not have write access to this folder. Generated images cannot be saved here.</source>
+			<trans-unit id="filelist.showAiArea">
+				<source>Show AI area</source>
 			</trans-unit>
 			<trans-unit id="module.prompt.label">
 				<source>Describe the image you want to generate</source>
@@ -47,12 +41,6 @@
 			</trans-unit>
 			<trans-unit id="module.candidates.headline">
 				<source>Generated candidates</source>
-			</trans-unit>
-			<trans-unit id="module.folderImages.headline">
-				<source>Images in this folder</source>
-			</trans-unit>
-			<trans-unit id="module.folderImages.empty">
-				<source>This folder does not contain any images yet.</source>
 			</trans-unit>
 			<trans-unit id="module.saved">
 				<source>Image saved</source>

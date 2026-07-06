@@ -24,4 +24,10 @@ return [
         'access' => 'user,group',
         'methods' => ['POST'],
     ],
+    'imager_toggle' => [
+        'path' => '/imager/toggle',
+        'target' => GeneratorAjaxController::class . '::toggle',
+        'access' => 'user,group',
+        'methods' => ['POST'],
+    ],
 ];

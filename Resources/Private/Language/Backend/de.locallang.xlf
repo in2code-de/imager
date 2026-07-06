@@ -19,17 +19,9 @@
 				<source>Create a photorealistic image of a Dalmatian swimming in the sea with a flag in its mouth bearing the inscription "in2code".</source>
 				<target state="translated">Erstelle ein fotorealistisches Bild von einem Dalmatiner, der beim Schwimmen im Meer eine Flagge im Maul trägt mit dem Schriftzung "in2code".</target>
 			</trans-unit>
-			<trans-unit id="module.headline">
-				<source>Generate AI images</source>
-				<target state="translated">KI-Bilder erzeugen</target>
-			</trans-unit>
-			<trans-unit id="module.selectFolder">
-				<source>Please select a folder in the file tree on the left to generate and store AI images.</source>
-				<target state="translated">Bitte wählen Sie links im Dateibaum einen Ordner aus, um KI-Bilder zu erzeugen und zu speichern.</target>
-			</trans-unit>
-			<trans-unit id="module.notWritable">
-				<source>You do not have write access to this folder. Generated images cannot be saved here.</source>
-				<target state="translated">Sie haben keinen Schreibzugriff auf diesen Ordner. Erzeugte Bilder können hier nicht gespeichert werden.</target>
+			<trans-unit id="filelist.showAiArea">
+				<source>Show AI area</source>
+				<target state="translated">KI-Bereich anzeigen</target>
 			</trans-unit>
 			<trans-unit id="module.prompt.label">
 				<source>Describe the image you want to generate</source>
@@ -62,14 +54,6 @@
 			<trans-unit id="module.candidates.headline">
 				<source>Generated candidates</source>
 				<target state="translated">Erzeugte Vorschläge</target>
-			</trans-unit>
-			<trans-unit id="module.folderImages.headline">
-				<source>Images in this folder</source>
-				<target state="translated">Bilder in diesem Ordner</target>
-			</trans-unit>
-			<trans-unit id="module.folderImages.empty">
-				<source>This folder does not contain any images yet.</source>
-				<target state="translated">Dieser Ordner enthält noch keine Bilder.</target>
 			</trans-unit>
 			<trans-unit id="module.saved">
 				<source>Image saved</source>

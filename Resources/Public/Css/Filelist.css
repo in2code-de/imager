@@ -1,4 +1,20 @@
-.imager-module__refinehint {
+.imager-ai-area {
+    margin: 0 0 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--typo3-component-border-color, #d7d7d7);
+    border-radius: 6px;
+    background-color: var(--typo3-component-bg, #fff);
+}
+
+.imager-ai-area__candidates {
+    margin-bottom: 1rem;
+}
+
+.imager-ai-area__controls .form-label {
+    font-weight: 600;
+}
+
+.imager-ai-area__refinehint {
     margin-top: 0.5rem;
     padding: 0.5rem 0.75rem;
     border-radius: 4px;
@@ -7,8 +23,10 @@
     font-size: 0.875rem;
 }
 
-.imager-module__candidates {
-    margin-top: 1.5rem;
+.imager-ai-area__buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
 }
 
 .imager-grid {
@@ -34,22 +52,10 @@
     display: block;
 }
 
-.imager-tile__meta {
-    padding: 0.5rem;
-    font-size: 0.8125rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .imager-tile__actions {
     display: flex;
     gap: 0.5rem;
     padding: 0.5rem;
-}
-
-.imager-tile--candidate img {
-    cursor: default;
 }
 
 .imager-tile--selected {
