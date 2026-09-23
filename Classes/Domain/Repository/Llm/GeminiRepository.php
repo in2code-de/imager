@@ -27,7 +27,7 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
         parent::__construct($storageRepository, $resourceFactory, $requestFactory);
-        $this->apiKey = getenv('GOOGLE_API_KEY') ?: ConfigurationUtility::getConfigurationByKey('apiKey') ?: '';
+        $this->apiKey = ConfigurationUtility::getApiKey();
         $this->model = ConfigurationUtility::getModel();
     }
 

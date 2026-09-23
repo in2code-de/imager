@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2026-09-23T12:00:00Z" product-name="imager">
+		<header/>
+		<body>
+			<trans-unit id="mainmodule.title">
+				<source>AI</source>
+			</trans-unit>
+			<trans-unit id="module.title">
+				<source>Imager</source>
+			</trans-unit>
+			<trans-unit id="module.description">
+				<source>Settings for AI generated images</source>
+			</trans-unit>
+			<trans-unit id="module.shortDescription">
+				<source>AI image generation settings</source>
+			</trans-unit>
+			<trans-unit id="module.intro">
+				<source>Values stored here overrule the extension configuration. Empty fields use the value shown as placeholder.</source>
+			</trans-unit>
+			<trans-unit id="button.save">
+				<source>Save settings</source>
+			</trans-unit>
+			<trans-unit id="setting.apiKey">
+				<source>Gemini API key</source>
+			</trans-unit>
+			<trans-unit id="setting.apiKey.description">
+				<source>Only visible for administrators. Recommended: set the environment variable GOOGLE_API_KEY instead. Leave empty to keep the stored key.</source>
+			</trans-unit>
+			<trans-unit id="setting.geminiModel">
+				<source>Gemini model</source>
+			</trans-unit>
+			<trans-unit id="setting.geminiModel.description">
+				<source>Model identifier including method, e.g. gemini-3-pro-image:generateContent</source>
+			</trans-unit>
+			<trans-unit id="setting.promptPrefix">
+				<source>Prompt prefix (system prompt)</source>
+			</trans-unit>
+			<trans-unit id="setting.promptPrefix.description">
+				<source>Text that is always added in front of every image prompt, e.g. image style or corporate design.</source>
+			</trans-unit>
+			<trans-unit id="setting.promptPlaceholder">
+				<source>Prompt placeholder</source>
+			</trans-unit>
+			<trans-unit id="setting.promptPlaceholder.description">
+				<source>Placeholder text of the prompt field in the backend. Plain text or an LLL reference.</source>
+			</trans-unit>
+			<trans-unit id="setting.promptValue">
+				<source>Prompt default text</source>
+			</trans-unit>
+			<trans-unit id="setting.promptValue.description">
+				<source>Default text of the prompt field in the backend. Plain text or an LLL reference.</source>
+			</trans-unit>
+			<trans-unit id="setting.combinedIdentifier">
+				<source>Image storage</source>
+			</trans-unit>
+			<trans-unit id="setting.combinedIdentifier.description">
+				<source>Only visible for administrators. Folder for generated images as combined identifier, e.g. 1:/_imager/</source>
+			</trans-unit>
+			<trans-unit id="setting.aspectRatio">
+				<source>Aspect ratio</source>
+			</trans-unit>
+			<trans-unit id="setting.aspectRatio.description">
+				<source>Default aspect ratio of generated images.</source>
+			</trans-unit>
+			<trans-unit id="secret.remove">
+				<source>Remove stored key</source>
+			</trans-unit>
+			<trans-unit id="source.environment">
+				<source>Set via environment variable %s, cannot be changed here.</source>
+			</trans-unit>
+			<trans-unit id="source.module">
+				<source>Stored in this module.</source>
+			</trans-unit>
+			<trans-unit id="source.extensionConfiguration">
+				<source>Taken from the extension configuration.</source>
+			</trans-unit>
+			<trans-unit id="source.none">
+				<source>Not configured yet.</source>
+			</trans-unit>
+			<trans-unit id="option.default">
+				<source>Default (%s)</source>
+			</trans-unit>
+			<trans-unit id="option.boolean.1">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="option.boolean.0">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="message.saved">
+				<source>Settings saved.</source>
+			</trans-unit>
+			<trans-unit id="message.invalid">
+				<source>Settings saved, but these values were invalid and have been ignored:</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
