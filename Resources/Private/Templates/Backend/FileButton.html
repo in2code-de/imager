@@ -16,7 +16,7 @@
 				class="form-control"
 				data-imager-prompt
 				rows="3"
-				placeholder="{f:if(condition:'{translate(key:promptPlaceholder)}',then:'{translate(key:promptPlaceholder)}')}"><f:if condition="{f:translate(key:promptValue)}">{f:translate(key:promptValue)}</f:if></textarea>
+				placeholder="{f:if(condition:promptPlaceholder, then:'{f:translate(key:promptPlaceholder, default:promptPlaceholder)}')}"><f:if condition="{promptValue}">{f:translate(key:promptValue, default:promptValue)}</f:if></textarea>
 
 		<button
 				type="button"
