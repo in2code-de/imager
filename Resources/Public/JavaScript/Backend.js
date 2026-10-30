@@ -1,5 +1,6 @@
 import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
 import DocumentService from '@typo3/core/document-service.js';
+import Notification from '@typo3/backend/notification.js';
 
 class ImagerBackend {
   constructor() {
@@ -62,13 +63,11 @@ class ImagerBackend {
         window.location.reload();
       } else {
         console.error('Imager: Adding image with prompt failed', data);
-        button.disabled = false;
-        button.classList.remove('disabled');
+        this.showError(button, data?.error);
       }
     } catch (e) {
       console.error('Imager: AJAX error', e);
-      button.disabled = false;
-      button.classList.remove('disabled');
+      this.showError(button, await this.getAjaxErrorMessage(e));
     }
   }
 
@@ -98,14 +97,24 @@ class ImagerBackend {
         window.location.reload();
       } else {
         console.error('Imager: Adding dummy image failed', data);
-        button.disabled = false;
-        button.classList.remove('disabled');
+        this.showError(button, data?.error);
       }
     } catch (e) {
       console.error('Imager: AJAX error', e);
-      button.disabled = false;
-      button.classList.remove('disabled');
+      this.showError(button, await this.getAjaxErrorMessage(e));
     }
+  }
+
+  showError(button, message) {
+    Notification.error(button.getAttribute('data-imager-error-title') || '', message || '');
+    button.disabled = false;
+    button.classList.remove('disabled');
+  }
+
+  async getAjaxErrorMessage(error) {
+    // AjaxRequest rejects with an AjaxResponse on HTTP errors, so read the error message from the JSON body
+    const data = await error?.resolve?.().catch(() => null);
+    return data?.error || error?.message;
   }
 }
 

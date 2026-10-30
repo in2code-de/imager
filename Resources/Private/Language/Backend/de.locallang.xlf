@@ -19,6 +19,10 @@
 				<source>Create a photorealistic image of a Dalmatian swimming in the sea with a flag in its mouth bearing the inscription "in2code".</source>
 				<target state="translated">Erstelle ein fotorealistisches Bild von einem Dalmatiner, der beim Schwimmen im Meer eine Flagge im Maul trägt mit dem Schriftzung "in2code".</target>
 			</trans-unit>
+			<trans-unit id="error.title">
+				<source>Image could not be created</source>
+				<target state="translated">Bild konnte nicht erstellt werden</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

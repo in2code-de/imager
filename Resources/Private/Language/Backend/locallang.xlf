@@ -15,6 +15,9 @@
 			<trans-unit id="prompt.value">
 				<source>Create a photorealistic image of a Dalmatian swimming in the sea with a flag in its mouth bearing the inscription "in2code".</source>
 			</trans-unit>
+			<trans-unit id="error.title">
+				<source>Image could not be created</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
