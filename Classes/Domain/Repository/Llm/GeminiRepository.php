@@ -77,6 +77,8 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
             ],
         ];
         $additionalOptions = [
+            // Guzzle exceptions on 4xx/5xx truncate the response body that contains the actual API error
+            'http_errors' => false,
             'headers' => [
                 'x-goog-api-key' => $this->apiKey,
                 'Content-Type' => 'application/json',
@@ -88,7 +90,8 @@ class GeminiRepository extends AbstractRepository implements RepositoryInterface
         );
         $response = $this->requestFactory->request($event->getApiUrl(), $this->requestMethod, $event->getAdditionalOptions());
         if ($response->getStatusCode() !== 200) {
-            throw new ApiException('Failed to generate image: ' . $response->getBody()->getContents(), 1764248401);
+            throw new ApiException('Failed to generate image (HTTP ' . $response->getStatusCode() . '): '
+                . $this->getErrorMessage($response->getBody()->getContents()), 1764248401);
         }
         $responseData = json_decode($response->getBody()->getContents(), true);
         if (isset($responseData['candidates'][0]['content']['parts']) === false) {

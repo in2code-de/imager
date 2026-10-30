@@ -78,4 +78,10 @@ abstract class AbstractRepository
             GeneralUtility::mkdir_deep(GeneralUtility::getFileAbsFileName($path));
         }
     }
+
+    protected function getErrorMessage(string $responseBody): string
+    {
+        $responseData = json_decode($responseBody, true);
+        return $responseData['error']['message'] ?? $responseBody;
+    }
 }
