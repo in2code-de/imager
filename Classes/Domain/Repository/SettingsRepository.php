@@ -6,9 +6,6 @@ namespace In2code\Imager\Domain\Repository;
 
 use TYPO3\CMS\Core\Registry;
 
-/**
- * Settings from the backend module "AI > Imager" are stored in sys_registry
- */
 class SettingsRepository
 {
     private const REGISTRY_NAMESPACE = 'tx_imager';

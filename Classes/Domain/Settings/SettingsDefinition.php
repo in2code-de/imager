@@ -7,9 +7,6 @@ namespace In2code\Imager\Domain\Settings;
 use In2code\Imager\Domain\Model\Setting;
 use In2code\Imager\Utility\ConfigurationUtility;
 
-/**
- * All settings that can be overwritten in the backend module "AI > Imager"
- */
 class SettingsDefinition
 {
     /**
